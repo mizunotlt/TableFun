@@ -39,12 +39,8 @@ public class test {
 
     @Test
     public void removeXY() {
-        List<Pairs> test = new ArrayList<>();
-        test.add(new Pairs(1.0, 2.0));
-        test.add(new Pairs(3.0, 4.5));
-        test.add(new Pairs(5.0, 8.0));
-        fun.removeXY(3.5);
-        Assert.assertEquals(test,fun.showAll());
+        Assert.assertTrue(fun.removeXY(3.5));
+        Assert.assertFalse(fun.removeXY(56.2));
     }
 
     @Test

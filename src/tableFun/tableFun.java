@@ -28,9 +28,14 @@ public class tableFun {
         tableFun.put(x,y);
     }
 
-    public tableFun removeXY(Double x) {
-        tableFun.remove(x);
-        return  this;
+    public boolean removeXY(Double x) {
+        if (tableFun.get(x) == null)
+            return false;
+        else{
+            tableFun.remove(x);
+            return true;
+        }
+
     }
 
     public List<Pairs> showAll() {
@@ -43,32 +48,32 @@ public class tableFun {
 
     public Pairs findXY(Double  value) {
 
-        Double leftPoint = tableFun.floorKey(value);
-        Double rightPoint = tableFun.ceilingKey(value);
+        Map.Entry<Double, Double> right = tableFun.floorEntry(value);
+
+        Map.Entry<Double, Double> leftPoint = tableFun.floorEntry(value);
+        Map.Entry<Double, Double> rightPoint = tableFun.ceilingEntry(value);
         if ((leftPoint == null) && (rightPoint == null)) {
             return null;
         }else
             if ((rightPoint != null) && (leftPoint != null)) {
-                if (abs(leftPoint - value) < abs(rightPoint - value)) {
-                    return new Pairs(leftPoint, tableFun.floorEntry(value).getValue());
+                if (abs(leftPoint.getKey() - value) < abs(rightPoint.getKey() - value)) {
+                    return new Pairs(leftPoint.getKey(), leftPoint.getValue());
                 } else
-                    return new Pairs(rightPoint, tableFun.ceilingEntry(value).getValue());
+                    return new Pairs(rightPoint.getKey(), rightPoint.getValue());
             }
             else {
-                return leftPoint == null ? new Pairs(rightPoint, tableFun.ceilingEntry(value).getValue()) :
-                        new Pairs(leftPoint, tableFun.floorEntry(value).getValue());
+                return leftPoint == null ? new Pairs(rightPoint.getKey(), rightPoint.getValue()) :
+                        new Pairs(leftPoint.getKey(), rightPoint.getValue());
             }
         }
 
     public Double interpolXY(Double value) {
-        Double leftBorder = tableFun.floorKey(value);
-        Double rightBorder = tableFun.ceilingKey(value);
-
+        Map.Entry<Double, Double> leftBorder = tableFun.floorEntry(value);
+        Map.Entry<Double, Double> rightBorder = tableFun.ceilingEntry(value);
         if ((leftBorder != null) && (rightBorder != null))
-            return tableFun.floorEntry(value).getValue() +
-                    ((tableFun.ceilingEntry(value).getValue() -
-                            tableFun.floorEntry(value).getValue())/(rightBorder - leftBorder))*(value - leftBorder);
-        else
+            return leftBorder.getValue() +
+                    ((rightBorder.getValue() - leftBorder.getValue())/(rightBorder.getKey() -
+                            leftBorder.getKey()))*(value - leftBorder.getKey());
             return null;
     }
 }
