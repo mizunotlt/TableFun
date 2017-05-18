@@ -1,10 +1,11 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import tableFun.tableFun;
 import tableFun.Pairs;
+import tableFun.tableFun;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,6 +15,7 @@ public class test {
     public Map<Double, Double> table1 = new TreeMap<Double, Double>();
     public tableFun fun = new tableFun(table);
     public tableFun fun1 = new tableFun(table1);
+    public tableFun fun3 = new tableFun();
     @Before
     public void add() {
         fun.putXY(1.0, 2.0);
@@ -37,7 +39,7 @@ public class test {
 
     @Test
     public void removeXY() {
-        ArrayList<String> test = new ArrayList<String>();
+        List<String> test = new ArrayList<String>();
         test.add("(1.0, 2.0)");
         test.add("(3.0, 4.5)");
         test.add("(5.0, 8.0)");
@@ -57,8 +59,19 @@ public class test {
     }
 
     @Test
+    public void eaqualsTest(){
+        Pairs pair1 = new Pairs(9.0,2.0);
+        Pairs pair2= new Pairs(4.56, 3.12);
+
+        Assert.assertTrue(new Pairs(9.0,2.0).equals(pair1));
+        Assert.assertTrue(new Pairs(4.56,3.12).equals(pair2));
+        Assert.assertFalse(new Pairs(0.0,2.8).equals(pair1));
+    }
+
+
+    @Test
     public void showAll() {
-        ArrayList<Pairs> test = new ArrayList<>();
+        List<Pairs> test = new ArrayList<>();
         test.add(new Pairs(1.0, 2.0));
         test.add(new Pairs(3.0, 4.5));
         test.add(new Pairs(3.5, 2.12));
@@ -69,17 +82,17 @@ public class test {
     @Test
     public void findXY(){
 
-        Assert.assertEquals("(4.5, 10.7)",fun1.findXY(7.5).toString());
+        Assert.assertEquals("(6.23, 3.93)",fun1.findXY(7.5).toString());
         Assert.assertEquals("(1.0, 3.45)", fun1.findXY(3.46).toString());
-        Assert.assertEquals("(12.45, 0.3)",fun1.findXY(0.7).toString());
+        Assert.assertEquals("(null, null)",fun1.findXY(0.7).toString());
     }
 
     @Test
     public void interpolXY() {
 
-        Assert.assertEquals(2.6, fun.interpolXY(1.4), 1e-5);
-        Assert.assertEquals(3.41, fun1.interpolXY(1.15), 1e-2);
-        Assert.assertEquals(2.74, fun1.interpolXY(3.57), 1e-2);
+        Assert.assertEquals(2.5, fun.interpolXY(1.4), 1e-5);
+        Assert.assertEquals(3.35, fun1.interpolXY(1.15), 1e-2);
+        Assert.assertEquals(1.76, fun1.interpolXY(3.57), 1e-2);
     }
 }
 
