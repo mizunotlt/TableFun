@@ -1,20 +1,21 @@
 package tableFun;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 import static java.lang.Math.abs;
 
 
 public class tableFun {
 
-    private  Map<Double, Double> tableFun = new HashMap<Double, Double>();
+    private  Map<Double, Double> tableFun;
 
 
-    public  tableFun(HashMap<Double, Double> map ){
-        this.tableFun = map;
+
+    public  tableFun (Map <Double,Double> fun ){
+        this.tableFun = fun;
 
     }
     public double getXY(Double x) {
@@ -31,21 +32,23 @@ public class tableFun {
         tableFun.remove(x);
     }
 
-    public ArrayList<String>  showAll(){
-        ArrayList result = new ArrayList<String>();
-        for (Double x : tableFun.values()){
-            result.add("(" + x + ", " + tableFun.get(x) + ")");
+    public ArrayList<Pairs> showAll() {
+        ArrayList<Pairs> result = new ArrayList<>();
+        for (Double x : tableFun.keySet()) {
+            result.add(new Pairs(x , tableFun.get(x)));
         }
         return result;
     }
 
-    public String findXY(Double  value){
+    public Pairs findXY(Double  value){
         Double min = value;
-        String result = "";
-        for (Double x : tableFun.values()){
-            if (abs(tableFun.get(x) - value) < min ){
-                min = tableFun.get(x) ;
-                result = "(" + x + ", " + tableFun.get(x) + ")";
+        Pairs result = new Pairs(0.0, 0.0);
+
+        for (Double i : tableFun.keySet()){
+
+            if (abs(tableFun.get(i) - value) < min ){
+                min = abs(tableFun.get(i) - value) ;
+               result  = new Pairs (i , tableFun.get(i));
             }
 
         }
@@ -53,26 +56,14 @@ public class tableFun {
     }
 
     public Double interpolXY(Double value) {
-        Double minL = value;
-        Double minR = value;
-        Double result;
-        for (Double x : tableFun.values()){
-            if (tableFun.get(x) < value) {
-                if (abs(tableFun.get(x) - value) < minL) {
-                    minL = tableFun.get(x);
-                }
-            }
-            if (tableFun.get(x) > value){
-                if (abs(tableFun.get(x) - value) < minR ){
-                    minR = tableFun.get(x) ;
-                }
-            }
+        List <Double> x = new ArrayList<>();
+        for (Double i : tableFun.keySet()){
+            x.add(i);
         }
-        result = (value * ( tableFun.get(minR) - tableFun.get(minL)))/(minR - minL) + (tableFun.get(minL)* minR -
-               tableFun.get(minR)*minL )/(minR - minL);
-        return result;
-
+        Double leftBorder = x.get(0);
+        Double rightBorder = x.get(x.size()-1);
+        return tableFun.get(leftBorder) +
+                ((tableFun.get(rightBorder) - tableFun.get(leftBorder))/(rightBorder - leftBorder))*(value - leftBorder);
     }
-
 
 }
