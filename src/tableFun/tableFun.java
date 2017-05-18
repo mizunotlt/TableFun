@@ -2,6 +2,8 @@ package tableFun;
 
 import java.util.*;
 
+import static java.lang.StrictMath.abs;
+
 
 public class tableFun {
 
@@ -26,9 +28,9 @@ public class tableFun {
         tableFun.put(x,y);
     }
 
-    public void removeXY(Double x) {
-
+    public tableFun removeXY(Double x) {
         tableFun.remove(x);
+        return  this;
     }
 
     public List<Pairs> showAll() {
@@ -39,24 +41,34 @@ public class tableFun {
         return result;
     }
 
-    public Pairs findXY(Double  value){
-        try{
-            return new Pairs(tableFun.floorKey(value), tableFun.get(tableFun.floorKey(value)));
-        }catch (NullPointerException e){
-            return new Pairs(null, null);
-        }
-    }
+    public Pairs findXY(Double  value) {
 
-    public Double interpolXY(Double value) { //проверить на null и чуть дописать
+        Double leftPoint = tableFun.floorKey(value);
+        Double rightPoint = tableFun.ceilingKey(value);
+        if ((leftPoint == null) && (rightPoint == null)) {
+            return null;
+        }else
+            if ((rightPoint != null) && (leftPoint != null)) {
+                if (abs(leftPoint - value) < abs(rightPoint - value)) {
+                    return new Pairs(leftPoint, tableFun.floorEntry(value).getValue());
+                } else
+                    return new Pairs(rightPoint, tableFun.ceilingEntry(value).getValue());
+            }
+            else {
+                return leftPoint == null ? new Pairs(rightPoint, tableFun.ceilingEntry(value).getValue()) :
+                        new Pairs(leftPoint, tableFun.floorEntry(value).getValue());
+            }
+        }
+
+    public Double interpolXY(Double value) {
         Double leftBorder = tableFun.floorKey(value);
         Double rightBorder = tableFun.ceilingKey(value);
 
-        if (leftBorder == null)
-            leftBorder = tableFun.firstKey();
-        if (rightBorder == null)
-            rightBorder = tableFun.lastKey();
-        return tableFun.get(leftBorder) +
-                ((tableFun.get(rightBorder) - tableFun.get(leftBorder))/(rightBorder - leftBorder))*(value - leftBorder);
+        if ((leftBorder != null) && (rightBorder != null))
+            return tableFun.floorEntry(value).getValue() +
+                    ((tableFun.ceilingEntry(value).getValue() -
+                            tableFun.floorEntry(value).getValue())/(rightBorder - leftBorder))*(value - leftBorder);
+        else
+            return null;
     }
-
 }

@@ -39,10 +39,10 @@ public class test {
 
     @Test
     public void removeXY() {
-        List<String> test = new ArrayList<String>();
-        test.add("(1.0, 2.0)");
-        test.add("(3.0, 4.5)");
-        test.add("(5.0, 8.0)");
+        List<Pairs> test = new ArrayList<>();
+        test.add(new Pairs(1.0, 2.0));
+        test.add(new Pairs(3.0, 4.5));
+        test.add(new Pairs(5.0, 8.0));
         fun.removeXY(3.5);
         Assert.assertEquals(test,fun.showAll());
     }
@@ -83,8 +83,8 @@ public class test {
     public void findXY(){
 
         Assert.assertEquals("(6.23, 3.93)",fun1.findXY(7.5).toString());
-        Assert.assertEquals("(1.0, 3.45)", fun1.findXY(3.46).toString());
-        Assert.assertEquals("(null, null)",fun1.findXY(0.7).toString());
+        Assert.assertEquals("(3.7, 1.67)", fun1.findXY(3.46).toString());
+        Assert.assertEquals("(1.0, 3.45)",fun1.findXY(0.7).toString());
     }
 
     @Test
