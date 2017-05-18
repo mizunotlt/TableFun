@@ -29,12 +29,7 @@ public class tableFun {
     }
 
     public boolean removeXY(Double x) {
-        if (tableFun.get(x) == null)
-            return false;
-        else{
-            tableFun.remove(x);
-            return true;
-        }
+        return tableFun.remove(x) != null;
 
     }
 
@@ -47,8 +42,6 @@ public class tableFun {
     }
 
     public Pairs findXY(Double  value) {
-
-        Map.Entry<Double, Double> right = tableFun.floorEntry(value);
 
         Map.Entry<Double, Double> leftPoint = tableFun.floorEntry(value);
         Map.Entry<Double, Double> rightPoint = tableFun.ceilingEntry(value);
